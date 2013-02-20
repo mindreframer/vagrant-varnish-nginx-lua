@@ -1,0 +1,3 @@
+class varnish::params{
+
+}
