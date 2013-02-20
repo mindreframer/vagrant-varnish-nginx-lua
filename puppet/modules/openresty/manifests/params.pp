@@ -5,7 +5,7 @@ class openresty::params{
   $filename = "$folder.tar.gz"
   $url      = "http://openresty.org/download/$filename"
 
-  $packages = [
+  $dependencies = [
     'wget',
     'build-essential',
     'libncurses5',

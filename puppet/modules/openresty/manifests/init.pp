@@ -7,7 +7,7 @@ class openresty{
 
 
 class openresty::dependencies{
-  openresty::package{$openresty::params::packages :}
+  openresty::package{$openresty::params::dependencies :}
 }
 
 define openresty::package{
