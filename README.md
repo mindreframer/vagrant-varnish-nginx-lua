@@ -23,3 +23,7 @@ file.
 
 [Vagrant]: http://vagrantup.com
 [Puppet]: http://puppetlabs.com
+
+### install packages
+
+puppet module install puppetlabs/vcsrepo --modulepath puppet/modules
