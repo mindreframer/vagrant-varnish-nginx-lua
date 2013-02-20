@@ -15,3 +15,4 @@ class{'basic':
 class{"varnish":}
 -> class{"heartbeat":}
 -> class{"openresty":}
+-> class{"redis":}
