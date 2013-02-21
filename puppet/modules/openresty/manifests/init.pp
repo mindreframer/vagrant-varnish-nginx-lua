@@ -24,6 +24,7 @@ class openresty::download{
 
   -> exec{"openresty::untar":
     command => "tar xvfz /var/tmp/$openresty::params::filename",
+    cwd     => "/var/tmp",
     unless  => "test -e /var/tmp/$openresty::params::folder"
   }
 
