@@ -4,7 +4,7 @@ class redis{
   -> class{"redis::download":}
   -> class{"redis::install":}
   -> class{"redis::configs":}
-  ~> class{"redis::service":}
+  ~> class{"redis::service":} # ~> == 'notify'
 }
 
 class redis::dependencies{
