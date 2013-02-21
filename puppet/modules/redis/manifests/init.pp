@@ -54,6 +54,7 @@ class redis::configs{
 }
 
 class redis::service{
+  # https://github.com/puppetlabs/puppet/blob/master/lib/puppet/provider/service/runit.rb
   service { "redis-server" :
     enable     => "true",
     ensure     => "running",
