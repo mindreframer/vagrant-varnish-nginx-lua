@@ -44,21 +44,17 @@ class redis::configs{
     ensure => directory
   }
   -> file{"/etc/sv/redis-server/run":
-    content => "#!/bin/bash \
-exec 2>&1 \
-exec redis-server",
+    content => template("redis/sv/run"),
     mode    => 0755
   }
   -> file{"/etc/sv/redis-server/log/run":
-    content => "#!/bin/bash \
-\
-set -e \
-exec 2>&1 \
-exec svlogd -tt -b 10000 .",
-    mode => 0755
+    content => template("redis/sv/log/run"),
+    mode    => 0755
   }
 }
 
 class redis::service{
-
+  file{"/etc/service/redis-server":
+    target => "/etc/sv/redis-server"
+  }
 }
