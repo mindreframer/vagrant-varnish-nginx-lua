@@ -12,7 +12,8 @@ class{'basic':
 }
 
 
-class{"varnish":}
+class{"runit":}
+-> class{"varnish":}
 -> class{"heartbeat":}
 -> class{"openresty":}
 -> class{"redis":}
