@@ -4,7 +4,7 @@ class redis{
   -> class{"redis::download":}
   -> class{"redis::install":}
   -> class{"redis::configs":}
-  -> class{"redis::service":}
+  ~> class{"redis::service":}
 }
 
 class redis::dependencies{
@@ -54,7 +54,11 @@ class redis::configs{
 }
 
 class redis::service{
-  file{"/etc/service/redis-server":
-    target => "/etc/sv/redis-server"
+  service { "redis-server" :
+    enable     => "true",
+    ensure     => "running",
+    provider   => "runit",
+    hasstatus  => "true",
+    hasrestart => "true",
   }
 }
