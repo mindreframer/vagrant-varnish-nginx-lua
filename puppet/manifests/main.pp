@@ -17,3 +17,4 @@ class{"runit":}
 -> class{"heartbeat":}
 -> class{"openresty":}
 -> class{"redis":}
+-> class{"memcached":}
