@@ -20,6 +20,9 @@ if [ ! -x $GIT ]; then
     fi
 fi
 
+# runit is needed, before puppet runs
+apt-get -q -y install runit
+
 # if [ `gem query --local | grep librarian-puppet | wc -l` -eq 0 ]; then
 #   gem install librarian-puppet
 #   cd $PUPPET_DIR && librarian-puppet install --clean
