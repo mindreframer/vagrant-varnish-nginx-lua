@@ -76,6 +76,16 @@ http {
       echo "Hello, $name, you rock!";
     }
 
+    # first LUA snippet
+    location /hellolua {
+      default_type 'text/plain';
+
+      content_by_lua '
+          local name = ngx.var.arg_name or "Anonymous"
+          ngx.say("Hello from LUA, ", name, "!")
+      ';
+    }
+
 
 
     #error_page  404              /404.html;
