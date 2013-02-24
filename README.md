@@ -1,7 +1,13 @@
 # Vagrant-Varnish-Nginx-Lua
 
+Inspiration:
+
+  - http://mikeferrier.com/2011/05/14/my-beautiful-dark-twisted-reverse-proxy-LRU-cache/
+
+
 ## Problem
 
+You want to play with Nginx, Redis, Varnish to make your site fly. But setting it up on you local machine is major PITA. Well.... Use Vagrant!
 
 
 ## How to use
