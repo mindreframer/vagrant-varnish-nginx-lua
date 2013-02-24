@@ -87,6 +87,22 @@ http {
     }
 
 
+    location /lua-content {
+      content_by_lua '
+        local res = ngx.location.capture("/sub")
+        if res.status >= 500 then
+            ngx.exit(res.status)
+        end
+        ngx.status = res.status
+        ngx.say(res.body)
+      ';
+    }
+
+    location /sub {
+      echo "Hello, Sub-Request is working properly!";
+    }
+
+
 
     #error_page  404              /404.html;
 
