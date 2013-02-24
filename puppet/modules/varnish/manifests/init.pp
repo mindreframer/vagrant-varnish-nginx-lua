@@ -14,8 +14,8 @@ class varnish::add_repo{
     unless  => "grep varnish /etc/apt/sources.list"
   }
   -> exec{"varnish::update_sources":
-    command => "sudo apt-get update && touch /var/run/.apt-get-update-for-varnish",
-    unless  => "test -e /var/run/.apt-get-update-for-varnish"
+    command => "sudo apt-get update && touch /var/tmp/.apt-get-update-for-varnish",
+    unless  => "test -e /var/tmp/.apt-get-update-for-varnish"
   }
 }
 
