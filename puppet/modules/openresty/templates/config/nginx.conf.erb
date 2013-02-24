@@ -1,3 +1,8 @@
+##
+# http://www.londonlua.org/scripting_nginx_with_lua/slides.html
+# https://github.com/chaoslawful/lua-nginx-module (Readme.md)
+##
+
 #user  nobody;
 worker_processes  1;
 
@@ -100,6 +105,50 @@ http {
 
     location /sub {
       echo "Hello, Sub-Request is working properly!";
+    }
+
+    location /lua-memcached {
+      content_by_lua '
+        local res = ngx.location.capture("/memcached",
+            { args = { cmd = "incr", key = "test_key" } }
+        )
+
+
+        ngx.say(res.body)
+      ';
+    }
+
+    location /memcached {
+      #set $memc_cmd $arg_cmd;
+      #set $memc_key $arg_key;
+      set $memc_cmd 'get';
+      set $memc_key 'test_key';
+      memc_pass 127.0.0.1:11211;
+    }
+
+    # GET /recur?num=5
+    location /recur {
+        # MIME type determined by default_type:
+        default_type 'text/plain';
+
+        content_by_lua '
+           local num = tonumber(ngx.var.arg_num) or 0
+
+           if num > 50 then
+               ngx.say("num too big")
+               return
+           end
+
+           ngx.say("num is: ", num)
+
+           if num > 0 then
+               res = ngx.location.capture("/recur?num=" .. tostring(num - 1))
+               ngx.print("status=", res.status, " ")
+               ngx.print("body=", res.body)
+           else
+               ngx.say("end")
+           end
+           ';
     }
 
 
