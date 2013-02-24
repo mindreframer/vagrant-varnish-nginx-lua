@@ -70,5 +70,3 @@ class openresty::service{
     hasrestart => "true",
   }
 }
-
-# binary: /usr/local/openresty/nginx/sbin
