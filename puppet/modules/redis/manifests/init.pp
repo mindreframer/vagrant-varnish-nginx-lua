@@ -51,6 +51,12 @@ class redis::configs{
     content => template("redis/sv/log/run"),
     mode    => 0755
   }
+  -> file{"/etc/redis":
+    ensure => directory,
+  }
+  -> file{"/etc/redis/redis.conf":
+    content => template("redis/config/redis.conf.erb")
+  }
 }
 
 class redis::service{
