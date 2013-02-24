@@ -5,6 +5,7 @@ class YourApp < Sinatra::Base
   set :foo, 'bar'
 
   get '/' do
+    #erb :index
     'Hello world!'
   end
 end
