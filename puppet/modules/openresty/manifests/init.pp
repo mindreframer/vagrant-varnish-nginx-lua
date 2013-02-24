@@ -37,7 +37,7 @@ class openresty::install{
     command => "echo 1 && ./configure && make && make install",
     cwd     => "/var/tmp/$openresty::params::folder",
     unless  => "test -e /usr/local/openresty && \
-      /usr/local/openresty/nginx/sbin/nginx  -v|grep $openresty::params::version"
+      /usr/local/openresty/nginx/sbin/nginx  -v  2>&1|grep $openresty::params::version |grep -v grep"
   }
 }
 
