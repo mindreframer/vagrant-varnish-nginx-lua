@@ -39,6 +39,11 @@ describe "testing" do
     r = `curl -s '#{url}'`
   end
 
+  # -i option, to include headers
+  def full_request(url)
+    r = `curl -s -i '#{url}'`
+  end
+
   def headers_request(url)
     r = `curl -s --head #{url}`
   end
@@ -53,6 +58,14 @@ describe "testing" do
   end
 
 
+  describe 'yourapp' do
+    describe 'home' do
+      it "works with esi inclusion" do
+        plain_request("0.0.0.0/home").must_equal "home_index\n\nESI CONTENT"
+      end
+    end
+  end
+
   describe 'LUA' do
     describe 'hellolua' do
       it "works for Anonymous" do
@@ -61,6 +74,31 @@ describe "testing" do
 
       it "works for named person" do
         plain_request("0.0.0.0/hellolua?name=TestUser").must_equal "Hello from LUA, TestUser!\n"
+      end
+    end
+
+    describe 'lua-content' do
+      it "works" do
+        plain_request("0.0.0.0/lua-content").must_equal "Hello, Sub-Request is working properly!\n\n"
+      end
+    end
+
+    describe 'recur' do
+      it "works without params" do
+        plain_request("0.0.0.0/recur").must_equal "num is: 0\nend\n"
+      end
+
+      it "works without params" do
+        plain_request("0.0.0.0/recur?num=3").must_equal %Q{num is: 3
+status=200 body=num is: 2
+status=200 body=num is: 1
+status=200 body=num is: 0
+end
+}
+      end
+
+      it "bails out, if num > 50" do
+        plain_request("0.0.0.0/recur?num=51").must_equal "num too big\n"
       end
     end
   end

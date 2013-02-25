@@ -5,6 +5,6 @@ YourProject::App.controllers :home do
   end
 
   get :esi do
-    "esi content, wowowo"
+    "ESI CONTENT"
   end
 end
