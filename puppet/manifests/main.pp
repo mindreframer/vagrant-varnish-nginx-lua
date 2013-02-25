@@ -18,3 +18,15 @@ class{"runit":}
 -> class{"openresty":}
 -> class{"redis":}
 -> class{"memcached":}
+
+
+
+# a helper script to run nginx tests
+# runs puppet + runs the unit tests
+file{"/usr/local/bin/nginx_tests":
+  content => "
+    cd /vagrant/nginx_tests && \
+    runpuppet && \
+    ruby nginx_test.rb",
+  mode    => 0755
+}
