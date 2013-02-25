@@ -102,4 +102,11 @@ end
       end
     end
   end
+
+  describe "memcache" do
+    it "works" do
+      plain_request("0.0.0.0/mem").must_equal "/mem\n"
+      #plain_request("0.0.0.0/mem/hey").must_equal "/mem/hey\n"
+    end
+  end
 end

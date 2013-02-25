@@ -152,6 +152,22 @@ http {
     }
 
 
+    location /mem {
+      set $memcached_key $uri;
+      memcached_pass     0.0.0.0:11211;
+      default_type       text/html;
+      error_page         404 @fallback;
+    }
+
+    location @fallback {
+      # if the file is not found, forward request to proxy
+      proxy_pass http://yourapp;
+    }
+
+
+
+
+
 
     #error_page  404              /404.html;
 
