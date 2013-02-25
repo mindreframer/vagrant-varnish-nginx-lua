@@ -47,6 +47,9 @@ http {
 
   #gzip  on;
 
+  # http://www.londonlua.org/scripting_nginx_with_lua/slides.html?full#shared-storage
+  lua_shared_dict stats 10m;
+
   server {
     listen       80;
     server_name  localhost;
@@ -107,24 +110,6 @@ http {
       echo "Hello, Sub-Request is working properly!";
     }
 
-    location /lua-memcached {
-      content_by_lua '
-        local res = ngx.location.capture("/memcached",
-            { args = { cmd = "incr", key = "test_key" } }
-        )
-
-
-        ngx.say(res.body)
-      ';
-    }
-
-    location /memcached {
-      #set $memc_cmd $arg_cmd;
-      #set $memc_key $arg_key;
-      set $memc_cmd 'get';
-      set $memc_key 'test_key';
-      memc_pass 127.0.0.1:11211;
-    }
 
     # GET /recur?num=5
     location /recur {
@@ -164,6 +149,41 @@ http {
       proxy_pass http://yourapp;
     }
 
+
+    ### Per-request data with "ngx.ctx"
+    location /ctx {
+        access_by_lua '
+            ngx.ctx.userid = 12345
+        ';
+        content_by_lua '
+            ngx.say(ngx.ctx.userid)
+        ';
+    }
+
+    # "ngx.shared.DICT": A dictionary API for storing global data across all requests.
+    # see lua_shared_dict var above
+    location /shared-ctx {
+      content_by_lua '
+        ngx.shared.stats:incr("hits", 1)
+        ngx.say(ngx.shared.stats:get("hits"))
+      ';
+    }
+
+
+    location /memcached {
+      content_by_lua '
+          local memcached = require "resty.memcached"
+          local memc = memcached:new()
+          local ok, err = memc:connect("127.0.0.1", 11211)
+
+          local ok, err = memc:set("foo", "bar", 3600)
+          if ok then
+              ngx.say("STORED")
+          end
+
+          memc:set_keepalive()
+      ';
+    }
 
 
 

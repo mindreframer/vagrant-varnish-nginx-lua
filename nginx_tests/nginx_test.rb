@@ -58,14 +58,6 @@ describe "testing" do
   end
 
 
-  describe 'yourapp' do
-    describe 'home' do
-      it "works with esi inclusion" do
-        plain_request("0.0.0.0/home").must_equal "home_index\n\nESI CONTENT"
-      end
-    end
-  end
-
   describe 'LUA' do
     describe 'hellolua' do
       it "works for Anonymous" do
@@ -101,12 +93,47 @@ end
         plain_request("0.0.0.0/recur?num=51").must_equal "num too big\n"
       end
     end
+
+    describe "ctx" do
+      it "works" do
+        plain_request("0.0.0.0/ctx").must_equal "12345\n"
+      end
+    end
+
+
+    # not WORKING!
+    describe "shared-ctx" do
+      it "works" do
+        skip
+        plain_request("0.0.0.0/shared-ctx").must_equal "nil\n"
+      end
+    end
   end
 
   describe "memcache" do
     it "works" do
-      plain_request("0.0.0.0/mem").must_equal "/mem\n"
+      plain_request("0.0.0.0/memcached").must_equal "STORED\n"
+      #plain_request("0.0.0.0/mem").must_equal "/mem\n"
       #plain_request("0.0.0.0/mem/hey").must_equal "/mem/hey\n"
+    end
+  end
+
+
+  describe "redis" do
+
+  end
+
+
+  describe "varnish" do
+
+  end
+
+
+  describe "ssi" do
+    describe 'home' do
+      it "works with esi inclusion" do
+        plain_request("0.0.0.0/home").must_equal "home_index\n\nESI CONTENT"
+      end
     end
   end
 end
