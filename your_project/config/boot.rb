@@ -33,6 +33,8 @@ Bundler.require(:default, PADRINO_ENV)
 ##
 # Add your before (RE)load hooks here
 #
+CACHE = Memcached.new(["127.0.0.1:11211"], {:binary_protocol => false})
+
 Padrino.before_load do
 end
 

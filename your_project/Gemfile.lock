@@ -45,6 +45,7 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    memcached (1.5.0)
     mime-types (1.21)
     multi_json (1.6.1)
     polyglot (0.3.3)
@@ -70,6 +71,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  memcached
   padrino!
   puma
   rake
