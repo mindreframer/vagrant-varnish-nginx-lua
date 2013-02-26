@@ -121,7 +121,7 @@ end
 
   describe "redis" do
     it "works" do
-      plain_request("0.0.0.0/redis").must_equal "dog: OK\n"
+      plain_request("0.0.0.0/redis").must_equal "dog: an animal\n"
     end
   end
 
