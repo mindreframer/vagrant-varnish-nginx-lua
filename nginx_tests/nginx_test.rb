@@ -120,7 +120,9 @@ end
 
 
   describe "redis" do
-
+    it "works" do
+      plain_request("0.0.0.0/redis").must_equal "dog: OK\n"
+    end
   end
 
 
