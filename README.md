@@ -3,11 +3,12 @@
 Inspiration:
   - http://www.londonlua.org/scripting_nginx_with_lua/slides.html
   - http://mikeferrier.com/2011/05/14/my-beautiful-dark-twisted-reverse-proxy-LRU-cache/
+  - https://github.com/samalba/hipache-nginx
 
 
 ## Problem
 
-You want to play with Nginx, Redis, Varnish to make your site fly. But setting it up on you local machine is major PITA. Well.... Use Vagrant!
+You want to play with Nginx, Redis, Varnish and LUA to make your site fly. But setting it up on you local machine is major PITA. Well.... Use Vagrant!
 
 
 ## How to use
