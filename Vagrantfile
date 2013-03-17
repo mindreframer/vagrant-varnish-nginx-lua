@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant::Config.run do |config|
-  config.vm.box = "base"
+  config.vm.box = "precise64"
 
   # This shell provisioner installs librarian-puppet and runs it to install
   # puppet modules. After that it just runs puppet
