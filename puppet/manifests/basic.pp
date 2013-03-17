@@ -24,30 +24,13 @@ class basic::helpers{
   $puppet_dir = "/vagrant/puppet"
   # script to run puppet
   file{"/usr/local/bin/runpuppet":
-    content => " \
-    sudo puppet apply -vv  --modulepath=$puppet_dir/modules/ $puppet_dir/manifests/main.pp\n",
+    content => "sudo -i puppet apply -vv  --modulepath=$puppet_dir/modules/ $puppet_dir/manifests/main.pp\n",
     mode    => 0755
   }
 
   # script to run librarian-puppet
   file{"/usr/local/bin/runlibrarian":
     content => "cd $puppet_dir &&  sudo librarian-puppet update \n",
-    mode    => 0755
-  }
-
-  # a helper script to run nginx tests
-  # runs puppet + runs the unit tests
-  file{"/usr/local/bin/nginx_tests":
-    content => "
-      cd /vagrant/nginx_tests && \
-      runpuppet && \
-      ruby nginx_test.rb",
-    mode    => 0755
-  }
-  file { "/usr/local/bin/plain_nginx_tests":
-    content => "
-      cd /vagrant/nginx_tests && \
-      ruby nginx_test.rb",
     mode    => 0755
   }
 }
