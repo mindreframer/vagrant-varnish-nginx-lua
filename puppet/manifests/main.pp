@@ -5,4 +5,5 @@ stage { 'last': }
 Stage['first'] -> Stage['main'] -> Stage['last']
 
 import 'basic.pp'
+import 'roles/*.pp'
 import 'nodes.pp'
