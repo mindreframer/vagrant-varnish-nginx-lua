@@ -7,12 +7,15 @@ node default {
   class{"runit":}
   -> class{"yourapp":}
   -> class{"varnish":}
-  -> class{"heartbeat":}
+  # -> class{"heartbeat":}
   -> class{"openresty":}
   -> class{"redis":}
   -> class{"memcached":}
   -> class{"benchmarking":}
 
   # needed for redis
-  sysctl::add{"overcommit_memory": line => "vm.overcommit_memory = 1"}
+  system::sysctl::add{"overcommit_memory": line => "vm.overcommit_memory = 1"}
+  class{"system::heavy_network":}
 }
+
+
