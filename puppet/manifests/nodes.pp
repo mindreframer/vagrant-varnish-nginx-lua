@@ -12,4 +12,7 @@ node default {
   -> class{"redis":}
   -> class{"memcached":}
   -> class{"benchmarking":}
+
+  # needed for redis
+  sysctl::add{"overcommit_memory": line => "vm.overcommit_memory = 1"}
 }
