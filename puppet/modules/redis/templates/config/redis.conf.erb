@@ -61,7 +61,8 @@ tcp-keepalive 0
 # verbose (many rarely useful info, but not a mess like the debug level)
 # notice (moderately verbose, what you want in production probably)
 # warning (only very important / critical messages are logged)
-loglevel notice
+# loglevel notice
+loglevel debug
 
 # Specify the log file name. Also 'stdout' can be used to force
 # Redis to log on the standard output. Note that if you use standard
@@ -108,6 +109,7 @@ databases 16
 save 900 1
 save 300 10
 save 60 10000
+save ""
 
 # By default Redis will stop accepting writes if RDB snapshots are enabled
 # (at least one save point) and the latest background save failed.
@@ -122,7 +124,8 @@ save 60 10000
 # and persistence, you may want to disable this feature so that Redis will
 # continue to work as usually even if there are problems with disk,
 # permissions, and so forth.
-stop-writes-on-bgsave-error yes
+# stop-writes-on-bgsave-error yes
+stop-writes-on-bgsave-error no
 
 # Compress string objects using LZF when dump .rdb databases?
 # For default that's set to 'yes' as it's almost always a win.
@@ -284,7 +287,7 @@ slave-priority 100
 # Once the limit is reached Redis will close all the new connections sending
 # an error 'max number of clients reached'.
 #
-# maxclients 10000
+maxclients 15000
 
 # Don't use more memory than the specified amount of bytes.
 # When the memory limit is reached Redis will try to remove keys
