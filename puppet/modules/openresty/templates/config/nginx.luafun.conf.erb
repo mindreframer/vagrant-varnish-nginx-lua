@@ -216,11 +216,11 @@ http {
 
 
       ngx.say("dog: ", res)
-      -- local ok, err = red:set_keepalive(0, 1000)
-      -- if not ok then
-      --   ngx.say("failed to set keepalive: ", err)
-      --   return
-      -- end
+      local ok, err = red:set_keepalive(0, 1000)
+      if not ok then
+        ngx.say("failed to set keepalive: ", err)
+        return
+      end
       ';
     }
 
