@@ -15,10 +15,15 @@ http {
   include       mime.types;
   default_type  application/octet-stream;
 
+  proxy_buffering on;
+  proxy_buffer_size 8k;
+  proxy_buffers 2048 8k;
+
   sendfile        on;
   #tcp_nopush     on;
 
   keepalive_timeout  0;
+  client_max_body_size 16M;
 
   #gzip  on;
 
