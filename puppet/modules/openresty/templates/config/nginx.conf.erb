@@ -1,8 +1,3 @@
-##
-# http://www.londonlua.org/scripting_nginx_with_lua/slides.html
-# https://github.com/chaoslawful/lua-nginx-module (Readme.md)
-##
-
 #user  nobody;
 worker_processes  1;
 
@@ -17,72 +12,23 @@ events {
 
 
 http {
-  upstream varnish {
-    server 0.0.0.0:6081;
-    keepalive 512;
-  }
-
-  upstream yourapp{
-    server 0.0.0.0:4567;
-    keepalive 512;
-  }
-
-  upstream redis {
-    server localhost:6379;
-
-    # a pool with at most 1024 connections
-    # and do not distinguish the servers:
-    keepalive 1024 single;
-  }
-
-
   include       mime.types;
   default_type  application/octet-stream;
 
   sendfile        on;
   #tcp_nopush     on;
 
-  #keepalive_timeout  0;
-  keepalive_timeout  65;
+  keepalive_timeout  0;
 
   #gzip  on;
-
-  # http://www.londonlua.org/scripting_nginx_with_lua/slides.html?full#shared-storage
-  lua_shared_dict stats 10m;
 
   server {
     listen       80;
     server_name  localhost;
+    charset utf-8;
+    access_log  logs/host.access.log ;
+    error_log   logs/host.error.log debug;
 
-    #charset koi8-r;
-
-    #access_log  logs/host.access.log  main;
-
-    location / {
-      server_name_in_redirect off;
-      proxy_set_header  X-Real-IP  $remote_addr;
-      proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header Host $http_host;
-      proxy_redirect off;
-      proxy_max_temp_file_size 0;
-
-      # turn SSI on
-      ssi  on;
-      ssi_silent_errors  off; # show errors
-
-
-      proxy_pass http://yourapp;
-      break;
-      #root   html;
-      #index  index.html index.htm;
-    }
-
-    # use the echo module, great for debugging
-    location /hello {
-      set_unescape_uri $name $arg_name;
-      set_if_empty $name "Anonymous";
-      echo "Hello, $name, you rock!";
-    }
 
     # first LUA snippet
     location /hellolua {
@@ -95,139 +41,14 @@ http {
     }
 
 
-    location /lua-content {
-      content_by_lua '
-        local res = ngx.location.capture("/sub")
-        if res.status >= 500 then
-            ngx.exit(res.status)
-        end
-        ngx.status = res.status
-        ngx.say(res.body)
-      ';
-    }
-
-    location /sub {
-      echo "Hello, Sub-Request is working properly!";
+    # use the echo module, great for debugging
+    location /hello {
+      set_unescape_uri $name $arg_name;
+      set_if_empty $name "Anonymous";
+      echo "Hello, $name, you rock!";
     }
 
 
-    # GET /recur?num=5
-    location /recur {
-        # MIME type determined by default_type:
-        default_type 'text/plain';
-
-        content_by_lua '
-           local num = tonumber(ngx.var.arg_num) or 0
-
-           if num > 50 then
-               ngx.say("num too big")
-               return
-           end
-
-           ngx.say("num is: ", num)
-
-           if num > 0 then
-               res = ngx.location.capture("/recur?num=" .. tostring(num - 1))
-               ngx.print("status=", res.status, " ")
-               ngx.print("body=", res.body)
-           else
-               ngx.say("end")
-           end
-           ';
-    }
-
-
-    location /mem {
-      set $memcached_key $uri;
-      memcached_pass     0.0.0.0:11211;
-      default_type       text/html;
-      error_page         404 @fallback;
-    }
-
-    location @fallback {
-      # if the file is not found, forward request to proxy
-      proxy_pass http://yourapp;
-    }
-
-
-    ### Per-request data with "ngx.ctx"
-    location /ctx {
-        access_by_lua '
-            ngx.ctx.userid = 12345
-        ';
-        content_by_lua '
-            ngx.say(ngx.ctx.userid)
-        ';
-    }
-
-    # "ngx.shared.DICT": A dictionary API for storing global data across all requests.
-    # see lua_shared_dict var above
-    location /shared-ctx {
-      content_by_lua '
-        ngx.shared.stats:incr("hits", 1)
-        ngx.say(ngx.shared.stats:get("hits"))
-      ';
-    }
-
-
-    location /memcached {
-      content_by_lua '
-          local memcached = require "resty.memcached"
-          local memc = memcached:new()
-          local ok, err = memc:connect("127.0.0.1", 11211)
-
-          local ok, err = memc:set("foo", "bar", 3600)
-          if ok then
-              ngx.say("STORED")
-          end
-
-          memc:set_keepalive()
-      ';
-    }
-
-    # https://github.com/agentzh/lua-resty-redis
-    location /redis {
-      default_type text/html;
-      content_by_lua '
-      local redis = require "resty.redis"
-      local red = redis:new()
-
-      local ok, err = red:connect("127.0.0.1", 6379)
-      if not ok then
-        ngx.say("failed to connect: ", err)
-        return
-      end
-
-      res, err = red:set("dog", "an animal")
-      if not ok then
-        ngx.say("failed to set dog: ", err)
-        return
-      end
-
-      res, err = red:get("dog")
-      if not ok then
-        ngx.say("failed to get dog: ", err)
-        return
-      end
-
-
-      ngx.say("dog: ", res)
-      local ok, err = red:set_keepalive(0, 1000)
-      if not ok then
-        ngx.say("failed to set keepalive: ", err)
-        return
-      end
-      ';
-    }
-
-
-
-
-
-    #error_page  404              /404.html;
-
-    # redirect server error pages to the static page /50x.html
-    #
     error_page   500 502 503 504  /50x.html;
     location = /50x.html {
         root   html;
