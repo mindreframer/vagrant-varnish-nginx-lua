@@ -6,16 +6,3 @@ Stage['first'] -> Stage['main'] -> Stage['last']
 
 import 'basic.pp'
 import 'nodes.pp'
-
-class{'basic':
-  stage => first
-}
-
-
-class{"runit":}
--> class{"yourapp":}
--> class{"varnish":}
--> class{"heartbeat":}
--> class{"openresty":}
--> class{"redis":}
--> class{"memcached":}
