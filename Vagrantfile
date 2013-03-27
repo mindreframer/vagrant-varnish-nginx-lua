@@ -8,6 +8,9 @@ Vagrant::Config.run do |config|
   # puppet modules. After that it just runs puppet
   config.vm.provision :shell, :path => "shell/bootstrap.sh"
 
+  # expose the VM on your network
+  # config.vm.network :bridged, :bridge => "en1: Wi-Fi (AirPort)"
+
   # sinatra app
   config.vm.forward_port 4567, 4567
 
