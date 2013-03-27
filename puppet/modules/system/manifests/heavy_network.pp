@@ -1,6 +1,11 @@
+# https://engineering.gosquared.com/optimising-nginx-node-js-and-networking-for-heavy-workloads
 class system::heavy_network{
-
+  # max connections to track
   system::proc{"/proc/sys/net/nf_conntrack_max": value => 65536}
+
+  # http://serverfault.com/questions/232360/very-large-number-of-connections-in-time-wait-state-server-is-slow-ipconntrac
+  system::sysctl::add{"net.ipv4.tcp_tw_reuse": line => "net.ipv4.tcp_tw_reuse='1'"}
+  system::sysctl::add{"net.ipv4.tcp_tw_recycle": line => "net.ipv4.tcp_tw_recycle=1"}
 
   system::sysctl::add{"ip_local_port_range": line => "net.ipv4.ip_local_port_range='1024 65000'"}
   system::sysctl::add{"net.ipv4.tcp_fin_timeout": line => "net.ipv4.tcp_fin_timeout='15'"}
@@ -9,8 +14,6 @@ class system::heavy_network{
   system::sysctl::add{"net.core.somaxconn": line => "net.core.somaxconn='4096'"}
   system::sysctl::add{"net.core.wmem_max": line => "net.core.wmem_max='16777216'"}
 
-  system::sysctl::add{"net.ipv4.tcp_tw_reuse": line => "net.ipv4.tcp_tw_reuse='1'"}
-  system::sysctl::add{"net.ipv4.tcp_tw_recycle": line => "net.ipv4.tcp_tw_recycle=1"}
 
   system::sysctl::add{"net.ipv4.tcp_max_syn_backlog": line => "net.ipv4.tcp_max_syn_backlog='20480'"}
   system::sysctl::add{"net.ipv4.tcp_max_tw_buckets": line => "net.ipv4.tcp_max_tw_buckets='400000'"}

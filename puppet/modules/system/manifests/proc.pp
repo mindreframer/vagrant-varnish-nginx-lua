@@ -4,7 +4,3 @@ define system::proc($value){
     unless  => "cat $name |grep -v grep|grep $value"
   }
 }
-
-
-# cat /proc/sys/net/nf_conntrack_max
-# 15508
