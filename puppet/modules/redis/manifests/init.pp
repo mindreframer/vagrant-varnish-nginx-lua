@@ -33,7 +33,7 @@ class redis::install{
   exec{"redis::install":
     command => "echo 1 && make && make install",
     cwd     => "/var/tmp/$redis::params::folder",
-    unless  => "test -e /usr/local/bin/redis-server"
+    unless  => "test -e /usr/local/bin/redis-server && /usr/local/bin/redis-server -v|grep -v grep |grep $redis::params::version"
   }
 }
 
