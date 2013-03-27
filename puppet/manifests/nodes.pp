@@ -11,4 +11,5 @@ node default {
   -> class{"openresty":}
   -> class{"redis":}
   -> class{"memcached":}
+  -> class{"benchmarking":}
 }
