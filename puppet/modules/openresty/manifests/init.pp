@@ -1,6 +1,7 @@
 class openresty{
   class{"openresty::params":}
   -> class{"openresty::dependencies":}
+  -> class{"openresty::path":}
   -> class{"openresty::download":}
   -> class{"openresty::install":}
   -> class{"openresty::configs":}
