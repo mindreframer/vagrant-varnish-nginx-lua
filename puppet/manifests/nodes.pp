@@ -12,6 +12,7 @@ node default {
   -> class{"lua::luarocks":}
   -> class{"redis":}
   -> class{"memcached":}
+  -> class{"postgres::v9_2":}
   -> class{"benchmarking":}
 
   # needed for redis
