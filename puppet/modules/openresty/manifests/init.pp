@@ -34,7 +34,9 @@ class openresty::download{
 
 class openresty::install{
   exec{"openresty::install":
-    command => "echo 1 && ./configure && make && make install",
+    command => "echo 1 && \
+    ./configure --with-luajit && \
+    make && make install",
     cwd     => "/var/tmp/$openresty::params::folder",
     unless  => "test -e /usr/local/openresty && \
       /usr/local/openresty/nginx/sbin/nginx  -v  2>&1|grep $openresty::params::version |grep -v grep"
