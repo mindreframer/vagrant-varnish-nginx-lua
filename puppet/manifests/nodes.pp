@@ -14,6 +14,7 @@ node default {
   -> class{"memcached":}
   -> class{"postgres::v9_2":}
   -> class{"benchmarking":}
+  -> class{"apt-fast":}
 
   # needed for redis
   system::sysctl::add{"overcommit_memory": line => "vm.overcommit_memory = 1"}
