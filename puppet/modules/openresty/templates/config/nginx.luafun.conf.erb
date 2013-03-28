@@ -1,6 +1,7 @@
 ##
 # http://www.londonlua.org/scripting_nginx_with_lua/slides.html
 # https://github.com/chaoslawful/lua-nginx-module (Readme.md)
+# http://wiki.nginx.org/HttpLuaModule
 ##
 
 #user  nobody;
@@ -49,6 +50,7 @@ http {
 
   # http://www.londonlua.org/scripting_nginx_with_lua/slides.html?full#shared-storage
   #lua_shared_dict stats 10m;
+  lua_shared_dict dogs 10m;
 
   server {
     listen       80;
@@ -58,7 +60,23 @@ http {
 
     access_log  logs/host.access.log ;
     # | debug_alloc | debug_mutex | debug_event | debug_http | debug_imap];
-    error_log logs/host.error.log debug_core;
+    error_log logs/host.error.log warn;
+
+
+    location /set {
+        content_by_lua '
+            local dogs = ngx.shared.dogs
+            dogs:set("Jim", 8)
+            ngx.say("STORED")
+        ';
+    }
+
+    location /get {
+        content_by_lua '
+            local dogs = ngx.shared.dogs
+            ngx.say(dogs:get("Jim"))
+        ';
+    }
 
     location / {
       server_name_in_redirect off;
@@ -216,6 +234,7 @@ http {
 
 
       ngx.say("dog: ", res)
+      ngx.say("who-whooo!")
       local ok, err = red:set_keepalive(0, 1000)
       if not ok then
         ngx.say("failed to set keepalive: ", err)
