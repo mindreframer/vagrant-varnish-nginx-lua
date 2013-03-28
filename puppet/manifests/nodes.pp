@@ -9,6 +9,7 @@ node default {
   -> class{"varnish":}
   # -> class{"heartbeat":}
   -> class{"openresty":}
+  -> class{"lua::luarocks":}
   -> class{"redis":}
   -> class{"memcached":}
   -> class{"benchmarking":}
