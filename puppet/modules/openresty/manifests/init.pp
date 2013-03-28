@@ -60,6 +60,14 @@ class openresty::configs{
   -> file{"/usr/local/openresty/nginx/conf/nginx.conf":
     content => template("openresty/config/nginx.luafun.conf.erb")
   }
+
+  -> file{"/usr/local/openresty/nginx/conf/bar.lua":
+    content => template("openresty/config/bar.lua.erb")
+  }
+  -> file{"/usr/local/openresty/nginx/conf/foo.lua":
+    content => template("openresty/config/foo.lua.erb")
+  }
+
 }
 
 class openresty::service{

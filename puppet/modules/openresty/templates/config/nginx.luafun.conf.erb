@@ -18,6 +18,9 @@ events {
 
 
 http {
+  # path for lua config files
+  lua_package_path 'conf/?.lua;;';
+
   upstream varnish {
     server 0.0.0.0:6081;
     keepalive 512;
@@ -76,6 +79,14 @@ http {
             local dogs = ngx.shared.dogs
             ngx.say(dogs:get("Jim"))
         ';
+    }
+
+
+    location = /luarocks {
+      content_by_lua '
+        local foo = require("foo")
+        foo.say("hello, luarocks!")
+      ';
     }
 
     location / {

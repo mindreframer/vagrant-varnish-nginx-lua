@@ -1,3 +1,4 @@
+# http://openresty.org/#UsingLuaRocks
 class lua::luarocks::params{
   #http://luarocks.org/releases/luarocks-2.0.12.tar.gz
   $version  = "2.0.12"
@@ -9,8 +10,13 @@ class lua::luarocks::params{
 
 class lua::luarocks{
   class{"lua::luarocks::params":}
+  -> class{"lua::luarocks::packages":}
   -> class{"lua::luarocks::download":}
   -> class{"lua::luarocks::install":}
+}
+
+class lua::luarocks::packages{
+  if ! defined(Package['unzip'])    { package { 'unzip': ensure => installed } }
 }
 
 class lua::luarocks::download{
