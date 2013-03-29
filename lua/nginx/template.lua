@@ -1,9 +1,10 @@
+-- https://github.com/Olivine-Labs/lustache/blob/master/spec/render_spec.lua
 local lustache = require "lustache"
 
 view_model = {
   title = "Joe Cocker",
   calc = function ()
-    return 2 + 433;
+    return 2 + 4;
   end
 }
 
