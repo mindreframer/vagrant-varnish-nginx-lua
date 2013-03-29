@@ -20,6 +20,7 @@ events {
 http {
   # path for lua config files
   lua_package_path 'conf/?.lua;;';
+  #lua_package_path '/usr/local/openresty/lualib/?/init.lua;;'; # Tell nginx where to find the lua standard library
 
   upstream varnish {
     server 0.0.0.0:6081;
