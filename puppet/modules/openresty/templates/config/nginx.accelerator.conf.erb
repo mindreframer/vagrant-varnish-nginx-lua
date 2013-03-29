@@ -10,7 +10,17 @@ events {
   worker_connections 1024;
 }
 
+
 http {
+
+   upstream my_redis_node {
+    server 127.0.0.1:6379;
+
+    # a pool with at most 1024 connections
+    # and do not distinguish the servers:
+    keepalive 1024 single;
+  }
+
   server {
     # just for development!
     lua_code_cache off;
@@ -25,9 +35,18 @@ http {
     }
 
     location /memcached {
-      set $memc_cmd $arg_cmd;
-      set $memc_key $arg_key;
-      memc_pass 127.0.0.1:11211;
+      content_by_lua_file '/vagrant/lua/nginx/memcache.lua';
+    }
+
+    # location ~ '^/cat/(.*)' {
+    #   set $name $1;
+    # }
+
+    location /redis {
+      set $value 'ﬁrst';
+      redis2_query set one $value;
+      redis2_query get one;
+      redis2_pass my_redis_node;
     }
   }
 }
