@@ -26,6 +26,7 @@ http {
     lua_code_cache off;
 
     listen 9999;
+
     location = /test {
       access_by_lua "require('accelerator').access({ host='127.0.0.1', port=11211 })";
     }
@@ -39,11 +40,18 @@ http {
     }
 
     location /subrequest {
+      header_filter_by_lua 'ngx.header.Server = "My Little Server"';
       content_by_lua_file '/vagrant/lua/nginx/subrequest.lua';
     }
 
     location /sub {
       echo "Hello, Sub-Request is working properly!";
+    }
+
+    location /body-filter{
+      # will modify the body
+      echo "My Content";
+      body_filter_by_lua_file '/vagrant/lua/nginx/body_filter.lua';
     }
 
     # location ~ '^/cat/(.*)' {
