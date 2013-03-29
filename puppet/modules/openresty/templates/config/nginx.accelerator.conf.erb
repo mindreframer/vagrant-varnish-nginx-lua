@@ -12,61 +12,22 @@ events {
 
 http {
   server {
+    # just for development!
+    lua_code_cache off;
+
     listen 9999;
-
     location = /test {
-
-      # access_by_lua "
-      #   ngx.log(ngx.DEBUG, 'ACCESS PHASE')
-      #   require('accelerator').access({ host='127.0.0.1', port=11211 })
-      # ";
-
-      # proxy_pass http://127.0.0.1:8081/;
-
       access_by_lua "require('accelerator').access({ host='127.0.0.1', port=11211 })";
     }
 
-
     location = /template{
-      #content_by_lua_file '/tmp/test_template.lua';
-      content_by_lua '
-      local lustache = require "lustache"
+      content_by_lua_file '/vagrant/lua/nginx/template.lua';
+    }
 
-      view_model = {
-        title = "Joe",
-        calc = function ()
-          return 2 + 4;
-        end
-      }
-
-      output = lustache:render("{{title}} spends {{calc}}", view_model)
-      ngx.say(output)
-      ';
+    location /memcached {
+      set $memc_cmd $arg_cmd;
+      set $memc_key $arg_key;
+      memc_pass 127.0.0.1:11211;
     }
   }
-
-
-# https://github.com/winton/nginx-accelerator
-##### template handling with LUA
-
-
-
-
-
-
-
-
-  # server {
-  #   listen 8081;
-
-  #   location = / {
-
-  #     more_set_headers "Cache-Control: max-age=1";
-
-  #     content_by_lua "
-  #       ngx.log(ngx.DEBUG, 'CONTENT PHASE')
-  #       ngx.say(os.time())
-  #     ";
-  #   }
-  # }
 }
