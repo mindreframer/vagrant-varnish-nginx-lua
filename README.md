@@ -46,5 +46,6 @@ file.
   - https://github.com/samalba/hipache-nginx
   - http://www.londonlua.org/scripting_nginx_with_lua/slides.html
   - http://mikeferrier.com/2011/05/14/my-beautiful-dark-twisted-reverse-proxy-LRU-cache/
+  - http://www.slideshare.net/TonyFabeen/nginx-scripting-extending-nginx-functionalities-with-lua
 
 
