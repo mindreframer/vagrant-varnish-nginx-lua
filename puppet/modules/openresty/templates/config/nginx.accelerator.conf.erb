@@ -38,6 +38,14 @@ http {
       content_by_lua_file '/vagrant/lua/nginx/memcache.lua';
     }
 
+    location /subrequest {
+      content_by_lua_file '/vagrant/lua/nginx/subrequest.lua';
+    }
+
+    location /sub {
+      echo "Hello, Sub-Request is working properly!";
+    }
+
     # location ~ '^/cat/(.*)' {
     #   set $name $1;
     # }
