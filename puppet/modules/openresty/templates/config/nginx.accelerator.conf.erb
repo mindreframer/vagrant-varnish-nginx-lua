@@ -39,6 +39,10 @@ http {
       content_by_lua_file '/vagrant/lua/nginx/memcache.lua';
     }
 
+    location /redis-renderer {
+      content_by_lua_file '/vagrant/lua/nginx/redis_renderer.lua';
+    }
+
     location /subrequest {
       header_filter_by_lua 'ngx.header.Server = "My Little Server"';
       content_by_lua_file '/vagrant/lua/nginx/subrequest.lua';

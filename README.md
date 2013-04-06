@@ -43,6 +43,7 @@ file.
   - https://github.com/torhve/Amatyr (Openresty with Postgres)
   - http://wdicc.com/intro-openresty/ (Posgres + )
   - http://agentzh.org/misc/slides/ngx-openresty-ecosystem/
+  - http://agentzh.org/misc/slides/ngx-openresty-ecosystem.pdf
   - https://github.com/samalba/hipache-nginx
   - http://www.londonlua.org/scripting_nginx_with_lua/slides.html
   - http://skillsmatter.com/podcast/home/scripting-nginx-with-lua

@@ -26,9 +26,12 @@ ngx.say(lustache:render(template, data, partials))
 
 -- arrays
 template = [[
+{{say}}
 {{#beatles}}
-  {{name}} -> Rockstar
+  {{name}}
+  {{hipstername}}
 {{/beatles}}
+
 ]]
 data = {
   beatles = {
@@ -36,6 +39,29 @@ data = {
     { name = "Paul McCartney" },
     { name = "George Harrison" },
     { name = "Ringo Starr" }
-  }
+  },
+  say         = function() return "Saying "  end,
+  hipstername = function (self) return self.name .. " was a hipster" end,
+}
+ngx.say(lustache:render(template, data, partials))
+
+
+
+-- functions with args
+
+template = [[
+{{#link}}
+{{#bold}}Hi {{name}}.{{/bold}}
+{{/link}}
+]]
+
+data = {
+  name = "Tater",
+  bold = function(self, text, render)
+    return "<b>" .. render(text) .. "</b>"
+  end,
+  link = function(self, text, render )
+    return "<a>" .. render(text) .. "</a>"
+  end
 }
 ngx.say(lustache:render(template, data, partials))
